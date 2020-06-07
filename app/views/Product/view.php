@@ -1,14 +1,23 @@
 <!--start-breadcrumbs-->
+
 <div class="breadcrumbs">
-        <div class="container">
-                <div class="breadcrumbs-main">
-                        <ol class="breadcrumb">
-                                <li><a href="index.html">Home</a></li>
-                                <li class="active">Single</li>
-                        </ol>
-                </div>
+    <div class="container">
+        <div class="breadcrumbs-main">
+            <ol class="breadcrumb">
+                <li><a href="<?=PATH;?>">Home</a></li>
+
+                <!--Хлебные крошки-->
+                <?php if(!empty($breadcrumbs)): ?>
+                    <?php foreach($breadcrumbs as $item): ?>
+                        <li class="active"><a href="category/<?= $item['alias']; ?>"><?= $item['title']; ?></a></li>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+
+            </ol>
         </div>
+    </div>
 </div>
+
 <!--end-breadcrumbs-->
 <!--start-single-->
 <?php $currency = ishop\App::$app->getProperty('currency'); ?>
@@ -141,6 +150,44 @@
             </li>
     </ul>
             </div>
+
+            <?php if (!empty($recentlyViewed)): ?>
+                <div class="latestproducts">
+                    <div class="product-one">
+                        <h3>Просмотренные</h3>
+                        <?php foreach ($recentlyViewed as $product): ?>
+
+                            <div class="col-md-4 product-left p-left">
+                                <div class="product-main simpleCart_shelfItem">
+                                    <a href="product/<?= $product['alias'];?>" class="mask"><img class="img-responsive zoom-img" src="<?= './images/' .$product['img'];?>" alt="<?= $product['title'];?>"/></a>
+                                    <div class="product-bottom">
+                                        <h3><a href="product/<?= $product['alias'];?>"><?= $product['title'];?></a></h3>
+                                        <p>Explore Now</p>
+                                        <h4>
+                                            <a class="add-to-cart-link" href="cart/add?id=<?= $product['id'];?>"><i></i></a>
+                                            <span class=" item_price">
+                                                <?= $currency['symbol_left'];?> <?= $product['price'] * $currency['value'];?> <?= $currency['symbol_right'];?>
+                                            </span>
+                                            <?php if (!empty($product['old_price'])): ?>
+                                                <del>
+                                                    <?= $currency['symbol_left'];?> <?=$product['old_price'] * $currency['value'];?> <?= $currency['symbol_right'];?>
+                                                </del>
+                                            <?php endif; ?>
+                                        </h4>
+                                    </div>
+                                    <?php if (!empty($product['old_price'])): ?>
+                                        <div class="srch">
+                                            <span> - <?= round(100*(1 - $product['price']/$product['old_price']), 1) ;?> %</span>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                        <?php endforeach; ?>
+                        <div class="clearfix"></div>
+                    </div>
+            </div>
+            <?php endif; ?>
 
             <?php if (!empty($related)): ?>
                 <div class="latestproducts">

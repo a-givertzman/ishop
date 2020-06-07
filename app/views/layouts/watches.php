@@ -37,8 +37,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </div>
                     <div class="box1">
                         <select tabindex="4" class="dropdown">
-                            <option value="" class="label">English :</option>
-                            <option value="1">English</option>
+                            <option value="" class="label">English</option>
+                            <option value="1">Russian</option>
                             <option value="2">French</option>
                             <option value="3">German</option>
                         </select>
@@ -240,11 +240,11 @@ $(window).load(function() {
 
         <!--Вывод логов работы с БД-->
         <?php
-            $logs = RB::getDatabaseAdapter()
+            $logs = \RB::getDatabaseAdapter()
                 ->getDatabase()
                 ->getLogger();
 
-        debug( $logs->grep( 'SELECT' ) );
+            debug( $logs->grep( 'SELECT' ) );
         ?>
 
 </body>

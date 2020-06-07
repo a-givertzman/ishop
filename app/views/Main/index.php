@@ -55,7 +55,9 @@
                     <?php foreach ($hits as $product): ?>
                         <div class="col-md-3 product-left">
                             <div class="product-main simpleCart_shelfItem">
-                                <a href="product/<?= $product['alias'];?>" class="mask"><img class="img-responsive zoom-img" src="<?= './images/' .$product['img'];?>" alt="<?= $product['title'];?>"/></a>
+                                <a href="product/<?= $product['alias'];?>" class="mask">
+                                    <img class="img-responsive zoom-img" src="<?= './images/' .$product['img'];?>" width="125px" height="200px" alt="<?= $product['title'];?>"/>
+                                </a>
                                 <div class="product-bottom">
                                     <h3><a href="product/<?= $product['alias'];?>"><?= $product['title'];?></a></h3>
                                     <p>Explore Now</p>

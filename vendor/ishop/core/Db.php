@@ -30,7 +30,7 @@ class Db {
      */
     protected function __construct() {
         $dbConfig = require_once CONFIG .'/db_config.php';
-        
+
         // псевдоним для класса \RedBeanPHP\R
         class_alias('\RedBeanPHP\R', 'RB');
         

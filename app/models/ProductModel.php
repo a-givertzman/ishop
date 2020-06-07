@@ -33,14 +33,17 @@ class ProductModel extends Model {
             // сохраняем в куках просмотренный товар
             setcookie('recentlyViewed', $id, time() + 3600*24*7, '/');
         } else {
+
+            $recentlyViewed = explode(',', $recentlyViewed);
+
             if (!in_array($id, $recentlyViewed)) {
 
                 // добавляем новый товар в просмотренные
                 $recentlyViewed[] = $id;
-                setcookie('recentlyViewed', implode(';', $recentlyViewed), time() + 3600*24*7, '/');
+                setcookie('recentlyViewed', implode(',', $recentlyViewed), time() + 3600*24*7, '/');
             }
         }
-        debug($recentlyViewed);
+        // debug($recentlyViewed);
     }
 
 
@@ -48,7 +51,26 @@ class ProductModel extends Model {
     /**
      * Метод |
      */
-    public function getRecentlyViewed($id) {
+    public function getRecentlyViewed($id, $count) {
+
+        // массив id недавно просмотренных товаров, 3 последних
+        $recentlyViewed = $this->getRecentlyViewedIds();
+
+        if (!empty($recentlyViewed)) {
+
+            // если массив id не пуст, то делаем запрос
+            // в бд и получаем массив товаров по этим id
+
+            $result = \RB::getAll("
+                select * from `product`
+                where `id` in ($recentlyViewed) and `id` <> $id
+                order by field(id, $recentlyViewed) DESC
+                limit ?;
+                ", [$count]
+            );
+            return $result;
+        }
+        return false;
     }
 
 
@@ -57,13 +79,11 @@ class ProductModel extends Model {
      * Метод | Возвращает массив id продуктов просмотренных
      *         ранее в количестве $count
      */
-    protected function getRecentlyViewedIds($count = null) {
+    protected function getRecentlyViewedIds() {
 
         if (!empty($_COOKIE['recentlyViewed'])) {
 
-            $recentlyViewed = explode(';', $_COOKIE['recentlyViewed']);
-
-            return array_slice($recentlyViewed, - $count);
+            return $recentlyViewed = $_COOKIE['recentlyViewed'];
         }
         return false;
     }

@@ -11,7 +11,14 @@
 
 
 return [
-    'dsn' => 'mysql:host=localhost:3306;dbname=ishop;charset=utf8',
+    'dsn' => 'mysql:host=localhost:3306;
+        dbname=ishop;
+        charset=utf8',
     'user' => 'admin',
     'pass' => 'admin'
+//     'dsn' => 'mysql:host=localhost:3306;
+//         dbname=u0959358_ishop;
+//         charset=utf8',
+//     'user' => 'u0959358_admin',
+//     'pass' => '1SobZav3@@@'
 ];

@@ -10,6 +10,7 @@ namespace app\controllers;
 
 use \ishop\App;
 use \app\models\ProductModel;
+use \app\models\BreadcrumbsModel;
 
 
 /**
@@ -43,19 +44,21 @@ class ProductController extends AppController {
         $productModel->setRecentlyViewed($product['id']);
         
         // хлебные крошки
-        
+        $breadcrumbsModel = new BreadcrumbsModel();
+        $breadcrumbs = $breadcrumbsModel->getBreadcrumbs($product['category_id']);
+
         // связанные товары
         $related = \RB::getAll(
             "select * from `related_product` "
                 . "join `product` "
                 . "on `product`.`id` = `related_product`.`related_id` "
-                . "where `related_product`.`product_id` = ?",
+                . "where `related_product`.`product_id` = ?;",
             [$product['id']]
         );
         
         // ранее просмотренные товары
-        $recentlyViewed = $productModel->getRecentlyViewed($product['id']);
-        
+        $recentlyViewed = $productModel->getRecentlyViewed($product['id'], 3);
+
         // галерея
         $gallery = \RB::getAll(
             "select * from `gallery` "
@@ -69,6 +72,6 @@ class ProductController extends AppController {
         $this->setMeta($product['title'], $product['description'], $product['keywords']);
         
         // передаем массив данных для рендеринга view
-        $this->set(compact('product', 'category', 'related', 'gallery', 'recentlyViewed'));
+        $this->set(compact('product', 'category', 'related', 'gallery', 'recentlyViewed', 'breadcrumbs'));
     }
 }
